@@ -6,12 +6,17 @@ package com.mycompany.academico.ui;
 
 import com.mycompany.academico.domain.Estudiante;
 import com.mycompany.academico.domain.Nota; 
+import com.mycompany.academico.service.CalculoService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.mycompany.academico.service.ArchivoService;
+import javax.swing.JFileChooser;
+import java.io.File;
+import java.io.IOException;
 
-/**
+/** 
  *
  * @author Coder
  */
@@ -22,7 +27,14 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
     // --- Variables de Instancia ---
     private final List<Estudiante> listaEstudiantes = new ArrayList<>(); // Lista para almacenar estudiantes
     private DefaultTableModel tableModel; // Modelo para la JTable
+    private final CalculoService calculoService = new CalculoService();
+    private final ArchivoService archivoService = new ArchivoService();
     
+    
+    // Función para validar una sola nota
+    private boolean esNotaValida(double nota) {
+        return nota >= 0.0 && nota <= 5.0;
+    }
     
     /**
      * Creates new form RegistroEstudianteFrame
@@ -61,6 +73,8 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
         lblResultado = new javax.swing.JLabel();
         btnLimpiar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        btnGuardarCsv = new javax.swing.JButton();
+        btnCargarCsv = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,59 +143,82 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
             }
         });
 
+        btnGuardarCsv.setText("Guardar CSV");
+        btnGuardarCsv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCsvActionPerformed(evt);
+            }
+        });
+
+        btnCargarCsv.setText("Cargar CSV");
+        btnCargarCsv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarCsvActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(lblNombre)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblEdad)
                                             .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(33, 33, 33))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblPromedio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(153, 153, 153)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(lblPromedio, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                                            .addGap(10, 10, 10))
+                                        .addComponent(lblNotaMax)
+                                        .addComponent(lblResultado)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lblNota3)
                                     .addComponent(lblNota2)
                                     .addComponent(lblNota1)
                                     .addComponent(txtNota1)
                                     .addComponent(txtNota2)
-                                    .addComponent(txtNota3, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)))
-                            .addComponent(lblNotaMax)
-                            .addComponent(lblResultado))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNombre)
+                                    .addComponent(txtNota3, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnGuardar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEstadistica)
-                                .addGap(18, 18, 18)
                                 .addComponent(btnCalcular)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnGuardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnLimpiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(btnGuardarCsv)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnSalir)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(btnCargarCsv)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEstadistica))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnSalir)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(lblNombre)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -199,24 +236,31 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNota2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
-                        .addComponent(lblNota3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNota3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPromedio))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNotaMax)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblResultado))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNota3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNota3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPromedio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblNotaMax)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblResultado))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnEstadistica)
-                    .addComponent(btnCalcular)
-                    .addComponent(btnLimpiar)
-                    .addComponent(btnSalir))
-                .addGap(21, 21, 21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnGuardarCsv)
+                        .addComponent(btnCargarCsv)
+                        .addComponent(btnEstadistica))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCalcular)
+                        .addComponent(btnGuardar)
+                        .addComponent(btnLimpiar)))
+                .addGap(33, 33, 33)
+                .addComponent(btnSalir)
+                .addContainerGap())
         );
 
         pack();
@@ -238,9 +282,9 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
         Object[] rowData = {
             est.getNombre(),
             est.getEdad(),
-            est.getNotas().get(0).getValor(), // Se accede a la primera nota de la lista
-            est.getNotas().get(1).getValor(), // Se accede a la segunda nota
-            est.getNotas().get(2).getValor()  // Se accede a la tercera nota
+            est.getNotas().get(0).getValor(), // Nota 1
+            est.getNotas().get(1).getValor(), // Nota 2
+            est.getNotas().get(2).getValor()  // Nota 3
         };
         tableModel.addRow(rowData);
     }
@@ -251,17 +295,73 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
-        String nombre = txtNombre.getText();
-        int edad = (Integer)txtEdad.getValue();
-        double nota1 = Double.parseDouble(txtNota1.getText());
-        double nota2 = Double.parseDouble(txtNota2.getText());
-        double nota3 = Double.parseDouble(txtNota3.getText());
+        String nombre = txtNombre.getText().trim();
+        String nota1txt = txtNota1.getText().trim();
+        String nota2txt = txtNota2.getText().trim();
+        String nota3txt = txtNota3.getText().trim();
         
+        // Validar que los campos no estén vacíos
+        if (nombre.isEmpty() || nota1txt.isEmpty() || nota2txt.isEmpty() || nota3txt.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                null,
+                "Debe llenar todos los campos antes de calcular.",
+                "Error de Validación",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+   
+        try{
+            int edad = (Integer) txtEdad.getValue();
+            double nota1 = Double.parseDouble(nota1txt);
+            double nota2 = Double.parseDouble(nota2txt);
+            double nota3 = Double.parseDouble(nota3txt);
+            // Validar rango de edad
+            if (edad <= 0 || edad >= 100) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    "La edad debe estar entre 1 y 99.",
+                    "Error de Validación",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            
+            
+            
+            // Validar rango de notas
+            if (!esNotaValida(nota1) || !esNotaValida(nota2) || !esNotaValida(nota3)) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Las notas deben estar entre 0.0 y 5.0.",
+                    "Error de Validación",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            
+        // Al cumplirse validaciones -> Crear el estudiante
         Estudiante estudiante = new Estudiante(nombre, edad, nota1, nota2, nota3);
         
-        lblPromedio.setText("Promedio: "+estudiante.calcularPromedio());
-        lblNotaMax.setText("Nota Maxima: "+estudiante.notaMaxima().getValor());
-        lblResultado.setText(estudiante.estaAprobado() ? "Aprobado" : "Reprobado");
+        // Usar CalculoService
+        double promedio = calculoService.promedio(estudiante.getNotas());
+        Nota maxNota = calculoService.notaMaxima(estudiante.getNotas());
+        boolean aprobado = calculoService.aprobado(promedio);
+        
+        // Mostrar resultados
+        lblPromedio.setText("Promedio: " + promedio);
+        lblNotaMax.setText("Nota Máxima: " + maxNota.getValor());
+        lblResultado.setText(aprobado ? "Aprobado" : "Reprobado");
+            
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(
+                null,
+                "Las notas deben ser valores numéricos válidos.",
+                "Error de Formato",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+         
     }//GEN-LAST:event_btnCalcularActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -350,6 +450,103 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void btnGuardarCsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCsvActionPerformed
+        
+        if (listaEstudiantes.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                null,
+                "No hay estudiantes para guardar.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Guardar archivo CSV");
+        int opcion = chooser.showSaveDialog(this);
+        
+        if (opcion != JFileChooser.APPROVE_OPTION) {
+            // el usuario canceló
+            return;
+        }
+        
+        File file = chooser.getSelectedFile();
+        
+        
+        // si el usuario no escribió .csv, se lo añadimos
+        if (!file.getName().toLowerCase().endsWith(".csv")) {
+            file = new File(file.getParentFile(), file.getName() + ".csv");
+        }
+        
+        try {
+            // Llamamos al método que requiere File
+            archivoService.guardarCSV(listaEstudiantes, file);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "Archivo CSV guardado correctamente:\n" + file.getAbsolutePath());
+        } catch (IOException ex) {
+            // Registrar y mostrar error amable al usuario
+            logger.log(java.util.logging.Level.SEVERE, "Error guardando CSV", ex);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "Error al guardar CSV:\n" + ex.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }   
+    }//GEN-LAST:event_btnGuardarCsvActionPerformed
+    
+    private void btnCargarCsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCsvActionPerformed
+       
+         // Crear un JFileChooser para que el usuario seleccione el archivo
+        JFileChooser fileChooser = new JFileChooser();
+        
+         // Mostrar el diálogo de apertura de archivo
+        int userSelection = fileChooser.showOpenDialog(this);
+        
+        // Si el usuario selecciona un archivo y presiona "Abrir"
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            // Obtener el archivo seleccionado
+            File fileToOpen = fileChooser.getSelectedFile();
+            
+            try {
+                // Llamar al método cargarCSV del servicio para leer los estudiantes del archivo
+                List<Estudiante> estudiantesCargados = archivoService.cargarCSV(fileToOpen);
+                
+                // Limpiar la lista actual de estudiantes y añadir los nuevos
+                listaEstudiantes.clear();
+                listaEstudiantes.addAll(estudiantesCargados);
+                
+                // Actualizar la tabla para mostrar los estudiantes recién cargados
+                actualizarTabla();
+                
+                // Mostrar un mensaje de éxito
+                if (!estudiantesCargados.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Estudiantes cargados exitosamente. Cantidad: " + estudiantesCargados.size(),
+                        "Carga Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "El archivo no contiene estudiantes.",
+                        "Carga Incompleta",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                }
+            } catch (IOException e) {
+                // Manejar errores de lectura o si el archivo es inválido
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Error al leer el archivo: " + e.getMessage(),
+                    "Error de Carga",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnCargarCsvActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -377,8 +574,10 @@ public class RegistroEstudianteFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalcular;
+    private javax.swing.JButton btnCargarCsv;
     private javax.swing.JButton btnEstadistica;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnGuardarCsv;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JScrollPane jScrollPane1;

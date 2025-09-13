@@ -29,7 +29,14 @@ public class Estudiante {
         this.notas.add(new Nota(nota1));
         this.notas.add(new Nota(nota2));
         this.notas.add(new Nota(nota3));
-}
+    }
+   // Constructor que el método cargarCSV necesita
+    public Estudiante(String id, String nombre, int edad, List<Nota> notas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.edad = edad;
+        this.notas = notas;
+    }
     
     // getters
     public String getId(){return id;}
@@ -42,27 +49,4 @@ public class Estudiante {
     public double getNota1() { return notas.get(0).getValor(); }
     public double getNota2() { return notas.get(1).getValor(); }
     public double getNota3() { return notas.get(2).getValor(); }
-    
-    // Calcula el promedio de las tres notas
-    public double calcularPromedio() {
-        return (getNota1() + getNota2() + getNota3()) / 3.0;
-    }
-    
-    // Devuelve la nota más alta
-    public Nota notaMaxima() {
-        Nota maxNota = notas.get(0);
-        if (notas.get(1).getValor() > maxNota.getValor()) {
-            maxNota = notas.get(1);
-        }
-        if (notas.get(2).getValor() > maxNota.getValor()) {
-            maxNota = notas.get(2);
-        }
-        return maxNota;
-    }
-    
-    // Indica si el estudiante está aprobado (promedio >= 3.0)
-    public boolean estaAprobado() {
-        return calcularPromedio() >= 3.0;
-    }
-    
 }
