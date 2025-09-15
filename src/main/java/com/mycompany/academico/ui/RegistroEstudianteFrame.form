@@ -138,10 +138,12 @@
               </Group>
               <EmptySpace pref="12" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                       <Component id="btnGuardarCsv" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnCargarCsv" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnEstadistica" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnCargarCsv" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnEstadistica" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                       <Component id="btnCalcular" alignment="3" min="-2" max="-2" attributes="0"/>

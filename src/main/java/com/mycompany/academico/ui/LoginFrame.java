@@ -32,7 +32,7 @@ public class LoginFrame extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         lblUsuario = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,10 +40,10 @@ public class LoginFrame extends javax.swing.JFrame {
 
         lblPassword.setText("Password:");
 
-        jButton1.setText("Ingresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresar.setText("Ingresar");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnIngresarActionPerformed(evt);
             }
         });
 
@@ -62,7 +62,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGap(79, 79, 79))
             .addGroup(layout.createSequentialGroup()
                 .addGap(134, 134, 134)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(136, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -77,16 +77,42 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jButton1)
+                .addComponent(btnIngresar)
                 .addGap(39, 39, 39))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "1234";
+    
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        String usuario = txtUsuario.getText();
+        String password = new String(txtPassword.getPassword());
+        
+        // Validacion basica.
+        if(USERNAME.equals(usuario) && PASSWORD.equals(password)){
+            javax.swing.JOptionPane.showMessageDialog(
+                    null, 
+                    "Bienvenido "+USERNAME);
+            
+            // instanciamos nuestra vista del registro
+            com.mycompany.academico.ui.RegistroEstudianteFrame registroFrame = new com.mycompany.academico.ui.RegistroEstudianteFrame();
+            
+            // hacemos visible el registro
+            registroFrame.setVisible(true);
+            
+            this.dispose();
+        }else{
+            javax.swing.JOptionPane.showMessageDialog(
+                    null, 
+                    "Usuario o contraseña incorrectos");
+        }
+        
+        
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,7 +140,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPasswordField txtPassword;

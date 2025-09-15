@@ -1,9 +1,11 @@
+com/mycompany/academico/ui/LoginFrame$1.class
 com/mycompany/academico/ui/RegistroEstudianteFrame$3.class
 com/mycompany/academico/ui/RegistroEstudianteFrame$7.class
 com/mycompany/academico/domain/Estudiante.class
 com/mycompany/academico/service/CalculoService.class
-com/mycompany/academico/ui/RegistroEstudianteFrame.class
+com/mycompany/academico/ui/LoginFrame.class
 com/mycompany/academico/ui/RegistroEstudianteFrame$2.class
+com/mycompany/academico/ui/RegistroEstudianteFrame.class
 com/mycompany/academico/Academico.class
 com/mycompany/academico/ui/RegistroEstudianteFrame$6.class
 com/mycompany/academico/ui/RegistroEstudianteFrame$5.class
