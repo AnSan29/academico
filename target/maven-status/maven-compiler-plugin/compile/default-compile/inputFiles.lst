@@ -1,7 +1,7 @@
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/Academico.java
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/domain/Estudiante.java
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/domain/Nota.java
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/service/ArchivoService.java
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/service/CalculoService.java
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/ui/LoginFrame.java
-/home/andres/Escritorio/RutaAvanzada-java/academico/src/main/java/com/mycompany/academico/ui/RegistroEstudianteFrame.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/service/ArchivoService.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/domain/Estudiante.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/service/CalculoService.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/Academico.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/ui/RegistroEstudianteFrame.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/ui/LoginFrame.java
+/home/Coder/Escritorio/santoyo/academico/src/main/java/com/mycompany/academico/domain/Nota.java
